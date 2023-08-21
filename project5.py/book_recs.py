@@ -1,8 +1,9 @@
-# Defining a class which stores the users profile with various attributes
+# Importing profile and random module
 import profile
 import random
 
 
+# Defining a class which stores the users profile with various attributes (name, age, etc)
 class Profile:
     def __init__(
         self,
@@ -20,7 +21,8 @@ class Profile:
         self.username = username
         self.password = password
 
-    # Making it so that when user_infor is called the attributes of the profile will be displayed
+    # displaying profile when user_info is called
+    # The attributes of the profile will be displayed
     def user_info(self) -> None:
         print(f"Name: {self.name}")
         print(f"Age: {self.age}")
@@ -30,7 +32,7 @@ class Profile:
         print(f"password: {self.password}")
 
 
-# Defining a class to store the questions and the possible choices
+# Defining a class to store the questions in the questionaire and the possible choices associated with each question
 class Questions:
     def __init__(self, question: str, choice: list[str]) -> None:
         self.question = question
@@ -46,8 +48,7 @@ class Book:
         self.rating = rating
 
 
-# First, I will want the user to have to register:
-# Function to register a new user profile
+# Def register is a function that is asking the user to register their profile
 def register() -> Profile:
     # Get user information
     print("Register your new account by: ")
@@ -64,7 +65,7 @@ def register() -> Profile:
     return Profile(name, age, gender, nationality, username, password)
 
 
-# Function for user login2
+# Function for user login
 def login(registered_profiles: list[Profile]) -> Profile:
     # this list will store the registered profiles
     while True:
@@ -76,18 +77,19 @@ def login(registered_profiles: list[Profile]) -> Profile:
             if profile.username == user_username and profile.password == user_password:
                 print("Thank You for logging in today! ")
                 return profile
-
-        print("Your details are not yet registered.")
-        choice = input("Would you like to register? type yes or no: ")
-        if choice.lower() == "yes":
-            # registers a new profile
-            registered_profiles.append(register())
-        elif choice.lower() == "no":
-            break
+        else:
+            print("Your details are not yet registered.")
+            choice = input("Would you like to register? type yes or no: ")
+            if choice.lower() == "yes":
+                # registers a new profile
+                registered_profiles.append(register())
+            elif choice.lower() == "no":
+                break
 
     return None
 
 
+# Function to ask questions and get user choice as well as return what the user has choosen
 def ask_questions(question: Questions) -> str:
     print(question.question)
     for choice in question.choice:
@@ -96,7 +98,9 @@ def ask_questions(question: Questions) -> str:
     return user_choice.upper()
 
 
-# Function to display a user menu
+# Function to display a user menu and handle user choices
+# The questions are passed through the menu because they are defined after the menu, without this, the ->
+# -> program wouldn't known what we are referring to
 # Questions defined after menu so we pass the questions in def menu so that it can work with it
 def menu(
     logged_in_profile: Profile,
@@ -123,11 +127,14 @@ def menu(
         choice = input("Enter your number choice here: ")
 
         if choice == "1":
+            # showing the information of the user
             logged_in_profile.user_info()
         elif choice == "2":
+            # regestering which books the user has read
             previously_read = input("which books have you read before: ")
             print(previously_read)
         elif choice == "3":
+            # Determine user mood and recommend a book genre based on the questions asked
             determining_mood = input(
                 "Select the mood that you are in: bored, sad, happy, angry, or productive "
             )
@@ -167,10 +174,12 @@ def menu(
                 )
 
         elif choice == "4":
+            # Giving the user a random book recomendation
             random_book = random.choice(books)
             print(f"{random_book.title} by {random_book.author}")
 
         elif choice == "5":
+            # Exiting the program
             print("Looking forward to seeing you again, Bye!")
         break
 
@@ -297,7 +306,7 @@ question_list = [
 ]
 
 
-# A list of book instances
+# A list of book their instances
 books = [
     Book("A game of Gods", "Scarlett St.Claire", "Fiction", 4.16),
     Book("Dark water Daughter", "HM Long", "Fiction", 4.06),
@@ -340,6 +349,7 @@ menu(
     logged_in_profile, question_1, question_2, question_3, question_4, question_5, books
 )
 
+# Looping the menu so that user can select other options
 while True:
     repeating = input("Can I help you with anything else? Type yes or no: ")
     if repeating.lower() == "yes":
